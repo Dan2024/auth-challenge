@@ -28,7 +28,21 @@ function App() {
       .catch((err) => console.error(err));
   };
 
-  const handleLogin = async ({ username, password }) => {};
+  const handleLogin = async ({ username, password }) => {
+    const opts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    };
+
+    fetch(`${apiUrl}/user/login`, opts)
+      .then((res) => res.json())
+      .then((jwtToken) => {
+        console.log(JSON.stringify(jwtToken));
+        localStorage.setItem("Authorization", `Bearer ${jwtToken.data}`);
+      })
+      .catch((err) => console.error(err));
+  };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
 

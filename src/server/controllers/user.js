@@ -23,19 +23,23 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { username, password } = req.body;
 
-  const foundUser = null;
+  const foundUser = await prisma.user.findFirst({
+    where: {
+      username,
+    },
+  });
 
   if (!foundUser) {
     return res.status(401).json({ error: "Invalid username or password." });
   }
 
-  const passwordsMatch = false;
+  const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 
   if (!passwordsMatch) {
     return res.status(401).json({ error: "Invalid username or password." });
   }
 
-  const token = null;
+  const token = jwt.sign({ username }, password);
 
   res.json({ data: token });
 };
