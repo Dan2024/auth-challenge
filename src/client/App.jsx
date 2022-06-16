@@ -44,7 +44,26 @@ function App() {
       .catch((err) => console.error(err));
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const token = localStorage.getItem("Authorization");
+
+    const opts = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({ title, description, runtimeMins }),
+    };
+
+    fetch(`${apiUrl}/movie`, opts)
+      .then((res) => res.json())
+      .then((createdMovie) => {
+        console.log(JSON.stringify(createdMovie));
+        setMovies((movies) => [...movies, createdMovie.data]);
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <div className="App">

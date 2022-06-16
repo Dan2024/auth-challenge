@@ -39,7 +39,7 @@ const login = async (req, res) => {
     return res.status(401).json({ error: "Invalid username or password." });
   }
 
-  const token = jwt.sign({ username }, password);
+  const token = jwt.sign({ username }, process.env.JWT_SECRET);
 
   res.json({ data: token });
 };
